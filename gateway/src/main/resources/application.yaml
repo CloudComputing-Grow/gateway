@@ -9,7 +9,6 @@ spring:
     gateway:
       mvc:
         routes:
-
           - id: achievement-service
             uri: http://8.230.16.157:3002
             predicates:
