@@ -11,7 +11,10 @@ spring:
         - id: achievement-service
           uri: http://8.230.16.157:3002
           predicates:
-            - Path=/achievements/**
+            - Path=/achievements,/achievements/**
+          filters:
+            - AddRequestHeader=X-User-Id,1
+            - AddRequestHeader=X-User-Role,USER
 
         - id: achievement-internal
           uri: http://8.230.16.157:3002
@@ -21,7 +24,3 @@ spring:
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
-
-filters:
-  - AddRequestHeader=X-User-Id,1
-  - AddRequestHeader=X-User-Role,USER
