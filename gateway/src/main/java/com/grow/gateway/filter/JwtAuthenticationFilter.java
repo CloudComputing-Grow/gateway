@@ -24,14 +24,18 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             ServerWebExchange exchange,
             GatewayFilterChain chain
     ) {
-        // CORS preflight 요청은 JWT 검사 제외
+
+        // CORS Preflight 요청은 통과
         if (exchange.getRequest().getMethod() == HttpMethod.OPTIONS) {
             return chain.filter(exchange);
         }
 
-        String path = exchange.getRequest().getURI().getPath();
+        String path =
+                exchange.getRequest()
+                        .getURI()
+                        .getPath();
 
-        // 로그인/회원가입은 JWT 검사 제외
+        // 인증 필요 없는 경로
         if (path.startsWith("/auth")) {
             return chain.filter(exchange);
         }
@@ -41,20 +45,29 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
                         .getHeaders()
                         .getFirst(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return Mono.error(new RuntimeException("JWT Token Missing"));
+        if (authHeader == null ||
+                !authHeader.startsWith("Bearer ")) {
+
+            return Mono.error(
+                    new RuntimeException("JWT Token Missing")
+            );
         }
 
-        String token = authHeader.substring(7);
+        String token =
+                authHeader.substring(7);
 
-        Claims claims = jwtUtil.validateToken(token);
+        Claims claims =
+                jwtUtil.validateToken(token);
 
-        String userId = claims.get("user_id").toString();
+        String userId =
+                claims.get("user_id")
+                        .toString();
 
         ServerHttpRequest request =
                 exchange.getRequest()
                         .mutate()
                         .header("X-User-Id", userId)
+                        .header("X-User-Role", "USER")
                         .build();
 
         return chain.filter(
