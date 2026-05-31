@@ -29,11 +29,33 @@ spring:
             allowCredentials: true
 
       routes:
-        - id: auth-service
+        # =====================
+        # Auth Service - Public
+        # =====================
+        - id: user-service-auth
           uri: http://34.50.12.192:3030
           predicates:
             - Path=/auth/**
 
+        # =====================
+        # User Service - Auth Required
+        # =====================
+        - id: user-service-user
+          uri: http://34.50.12.192:3030
+          predicates:
+            - Path=/user,/user/**
+
+        # =====================
+        # User Service - Internal
+        # =====================
+        - id: user-service-internal
+          uri: http://34.50.12.192:3030
+          predicates:
+            - Path=/api/internal/v1/users,/api/internal/v1/users/**
+
+        # =====================
+        # Achievement Service
+        # =====================
         - id: achievement-service
           uri: http://8.230.16.157:3002
           predicates:
