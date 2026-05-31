@@ -1,26 +1,26 @@
 server:
   port: 8000
 
+jwt:
+  secret: cloud_computing_2026_grow_access_secret_key
+
 spring:
   application:
     name: gateway
 
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: achievement-service
-            uri: http://8.230.16.157:3002
-            predicates:
-              - Path=/achievements,/achievements/**
-            filters:
-              - AddRequestHeader=X-User-Id,1
-              - AddRequestHeader=X-User-Role,USER
+      routes:
 
-          - id: achievement-internal
-            uri: http://8.230.16.157:3002
-            predicates:
-              - Path=/internal/**
+        - id: achievement-service
+          uri: http://8.230.16.157:3002
+          predicates:
+            - Path=/achievements,/achievements/**
+
+        - id: achievement-internal
+          uri: http://8.230.16.157:3002
+          predicates:
+            - Path=/internal/**
 
 logging:
   level:
