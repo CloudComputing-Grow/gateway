@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8080
 
 jwt:
   secret: cloud_computing_2026_grow_access_secret_key
@@ -32,29 +32,59 @@ spring:
 
       routes:
         - id: auth-service
-          uri: http://34.50.12.192:3030
+          uri: http://user:3001
           predicates:
             - Path=/auth/**
 
         - id: user-service
-          uri: http://34.50.12.192:3030
+          uri: http://user:3001
           predicates:
             - Path=/user,/user/**
 
         - id: user-service-internal
-          uri: http://34.50.12.192:3030
+          uri: http://user:3001
           predicates:
             - Path=/api/internal/v1/users,/api/internal/v1/users/**
 
         - id: achievement-service
-          uri: http://8.230.16.157:3002
+          uri: http://achievement:3002
           predicates:
             - Path=/achievements,/achievements/**
 
         - id: achievement-internal
-          uri: http://8.230.16.157:3002
+          uri: http://achievement:3002
           predicates:
             - Path=/internal/**
+
+        - id: mission-service
+          uri: http://mission:3003
+          predicates:
+            - Path=/api/v1/missions/**
+
+        - id: mission-admin-service
+          uri: http://mission:3003
+          predicates:
+            - Path=/api/v1/admin/**
+
+        - id: inventory-service
+          uri: http://inventory-market:3004
+          predicates:
+            - Path=/api/v1/inventory/**
+
+        - id: market-service
+          uri: http://inventory-market:3004
+          predicates:
+            - Path=/api/v1/market/**
+
+        - id: growth-diary-service
+          uri: http://growth-diary:3005
+          predicates:
+            - Path=/api/v1/growth-diary/**
+
+        - id: community-service
+          uri: http://community:3006
+          predicates:
+            - Path=/api/v1/community/**
 
 logging:
   level:
